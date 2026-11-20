@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>VFPR · Ground station</title>
+<style>
+:root{color-scheme:dark;--bg:#10151b;--panel:#182029;--line:#303c49;--text:#e8eff5;--muted:#9cacbb;--green:#b7f078;--amber:#ffd082;--red:#ff9191;--blue:#9ecbff;font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text)}button,input{font:inherit}button{color:inherit;cursor:pointer}button:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:3px}.shell{max-width:1440px;margin:auto;padding:28px}header{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin:0 0 6px}h1{font-size:28px;letter-spacing:-.03em;font-weight:650;margin:0}h1 span{font-weight:400;color:var(--muted)}.subtitle{color:var(--muted);margin:6px 0 0;font-size:12px}.header-right{text-align:right}.mode{font-size:18px;font-weight:600;letter-spacing:.03em}.muted{color:var(--muted)}.pills{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:24px 0 16px}.pill{padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:9px}.pill-label{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em}.pill-value{font-size:14px;font-weight:600;margin-top:3px}.pill-detail{color:var(--muted);font-size:11px;margin-top:3px}.tone-good{color:var(--green)}.tone-warn{color:var(--amber)}.tone-bad{color:var(--red)}.tone-neutral{color:var(--muted)}nav{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;margin-bottom:20px}nav button{white-space:nowrap;border:0;border-bottom:2px solid transparent;background:transparent;padding:12px 18px;color:var(--muted)}nav button[aria-selected=true]{color:var(--green);border-bottom-color:var(--green)}.section-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;margin:20px 0 12px}.section-heading h2{font-size:17px;letter-spacing:-.015em;margin:0;font-weight:600}.section-heading p{font-size:11px;color:var(--muted);margin:0}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{min-width:0;border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden}.card-head{padding:14px 16px 10px;display:flex;justify-content:space-between;align-items:center;gap:10px}.card h3{font-size:12px;font-weight:600;margin:0;letter-spacing:.025em}.age{font-size:10px;white-space:nowrap;color:var(--muted)}.age.stale{color:var(--amber)}.card-body{padding:0 16px 14px}.metric{font-size:31px;line-height:1.2;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.04em}.metric small{font-size:13px;font-weight:400;letter-spacing:0;color:var(--muted);margin-left:6px}.metric-note{font-size:11px;margin-top:6px;color:var(--muted)}table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}td{padding:7px 0;border-top:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}td:first-child{color:var(--muted);width:48%;padding-right:12px}td:last-child{font-variant-numeric:tabular-nums;text-align:right}td.data-wide{white-space:pre-wrap}.empty{color:var(--muted);font-size:12px;padding:4px 0 0}.status-list{padding:0;margin:0;list-style:none}.status-list li{border-top:1px solid var(--line);padding:9px 0;font-size:12px;overflow-wrap:anywhere}.status-list small{display:block;color:var(--muted);font-size:10px;margin-bottom:3px}.notice{font-size:12px;color:var(--muted);padding:12px 15px;border:1px solid var(--line);border-radius:8px;margin-bottom:15px}.notice.warning{color:var(--amber);border-color:#725e35;background:#29261e}.controls{display:flex;justify-content:space-between;align-items:center;gap:15px;border:1px solid var(--line);border-radius:9px;padding:14px 16px;margin:16px 0}.controls strong{font-size:12px}.controls p{margin:3px 0 0;color:var(--muted);font-size:11px}.toggle{flex:none;min-width:100px;padding:8px 12px;border:1px solid var(--line);border-radius:7px;background:var(--panel);font-size:12px}.toggle[aria-pressed=true]{color:var(--green);border-color:#66864a}.toggle:disabled{opacity:.5;cursor:wait}.control-message{font-size:11px;color:var(--muted);min-height:16px;margin:0 0 16px}details{margin-top:20px;border:1px solid var(--line);border-radius:9px;overflow:hidden}summary{cursor:pointer;padding:13px 16px;font-size:12px;color:var(--muted)}pre{padding:16px;margin:0;max-height:440px;overflow:auto;font:11px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;background:#0d1218;color:#b8cbdc;white-space:pre-wrap;overflow-wrap:anywhere}footer{display:flex;justify-content:space-between;gap:15px;font-size:10px;color:var(--muted);margin-top:24px;padding-top:15px;border-top:1px solid var(--line)}[hidden]{display:none!important}.stack{margin-top:16px}.wide{grid-column:1/-1}.tag{font-size:10px;color:var(--blue)}@media(max-width:1050px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:640px){.shell{padding:18px 14px}h1{font-size:23px}header{gap:12px}.header-right{max-width:42%}.mode{font-size:13px}.pills{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:18px}.grid{grid-template-columns:1fr}nav button{padding:11px 13px;font-size:12px}.section-heading{align-items:flex-start;flex-direction:column;gap:4px}.metric{font-size:28px}.card-head{padding-top:12px}.subtitle{max-width:230px}footer{flex-direction:column;gap:4px}}
+/* Flight instruments and plots share the same quiet, offline visual system. */
+:root{--bg:#0a1018;--panel:#111c28;--line:#253545;--text:#e8f1f8;--muted:#89a0b4;--green:#8fe6be;--blue:#82c9ef;--x:#80caff;--y:#92e2b3;--z:#f3b27a}
+body{background:radial-gradient(ellipse at 10% 0,#152c3f 0,transparent 45%),var(--bg);min-height:100vh}.shell{max-width:1480px;padding:30px 34px}header{align-items:center}.eyebrow{color:#77a9c8;letter-spacing:.2em}h1{font-size:33px;font-weight:650}h1 span{font-size:16px;color:#7090aa;letter-spacing:0}.mode{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:18px;letter-spacing:.08em;color:var(--green)}.subtitle{line-height:1.6}.pills{margin:24px 0 18px;gap:12px}.pill{background:#111d2a;border-radius:12px;padding:14px 17px;box-shadow:0 6px 20px #00000010}.pill-label{font-size:9px;letter-spacing:.14em}.pill-value{margin-top:5px}.pill-detail{font-size:10px}.notice{background:#101b27;color:#8aa2b8;font-size:11px;padding:10px 15px;margin-bottom:10px}nav{position:sticky;top:0;z-index:3;background:#0b131df2;backdrop-filter:blur(12px);margin-bottom:18px;padding-top:4px}nav button{padding:14px 22px;font-size:12px;font-weight:550;letter-spacing:.03em}nav button[aria-selected=true]{color:var(--blue);border-bottom-color:var(--blue)}.section-heading{margin:20px 0 16px}.section-heading h2{font-size:20px;font-weight:600}.card{border-radius:13px;background:linear-gradient(145deg,#142232,#101b27);box-shadow:0 7px 24px #0000000d}.card-head{padding:16px 18px 11px}.card h3{font-size:11px;letter-spacing:.06em}.card-body{padding:0 18px 16px}.metric{font-size:30px;font-weight:550}.metric-note{line-height:1.7;font-size:11px}.visual-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;margin-bottom:16px}.visual-grid:empty{display:none}.instrument-card .card-body{padding:0 15px 14px}.instrument-layout{position:relative;overflow:hidden;border:1px solid #2a4052;border-radius:9px;background:#0a1520}.instrument-svg{display:block;width:100%;height:272px}.instrument-stats{display:flex;gap:20px;justify-content:center;padding-top:11px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:#b6cbdd;font-size:11px}.instrument-stats strong{color:#eff6fd;font-weight:550}.instrument-hint{font-size:10px;color:var(--muted);text-align:center;margin:7px 0 0}.instrument-overlay{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:#101a25dc;border:1px solid #374e60;border-radius:5px;padding:4px 12px;color:#dce9f3;font:10px ui-monospace,monospace;letter-spacing:.1em;white-space:nowrap}.instrument-layout[data-state=stale] .instrument-svg{opacity:.55}.instrument-layout[data-state=waiting] .instrument-svg{opacity:.25}.instrument-state{font-size:9px;font-weight:600;letter-spacing:.1em;color:var(--green)}.instrument-state.stale{color:var(--amber)}.instrument-state.waiting{color:var(--muted)}.plot-toolbar{grid-column:1/-1;display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap;padding:12px 16px;background:#111d29;border:1px solid var(--line);border-radius:10px}.plot-toolbar label{color:var(--muted);font-size:11px;display:flex;align-items:center;gap:10px}select{font:12px system-ui;color:var(--text);border:1px solid #354d62;background:#172636;padding:7px 28px 7px 10px;border-radius:6px;min-width:125px;max-width:100%}select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}.plot-toolbar p{margin:0;font-size:10px;color:var(--muted)}.axes-toggle{display:flex;gap:5px;align-items:center}.axis-button{padding:5px 10px;border:1px solid #34495b;border-radius:5px;background:#182534;font:11px ui-monospace,monospace;opacity:.45}.axis-button[aria-pressed=true]{opacity:1;background:#20354a}.axis-x{color:var(--x)}.axis-y{color:var(--y)}.axis-z{color:var(--z)}.chart-card{min-width:0}.chart-card .card-head{padding-bottom:8px}.chart-card .card-body{padding:0 9px 12px}.chart-svg{display:block;width:100%;height:190px;overflow:visible}.plot-meta{display:flex;justify-content:space-between;gap:10px;padding:0 9px;color:var(--muted);font-size:10px;font-variant-numeric:tabular-nums}.plot-current{display:flex;gap:13px;justify-content:flex-start;flex-wrap:wrap;padding:1px 9px 7px;font:11px ui-monospace,monospace;min-height:27px}.plot-unit{color:#8da8bd}.plot-empty{font-size:12px;fill:#849db2}.plot-note{margin:0;padding:0 9px;color:var(--muted);font-size:10px;line-height:1.7}.chart-status{font-size:10px;color:var(--muted)}.visual-grid.plot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.visual-grid.power-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.chart-card svg text{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.records-heading{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}.controls{margin-top:22px;background:#0e1924}.toggle{background:#162536}.age{font-size:9px}.status-list small{letter-spacing:.03em}.tag{font-size:10px}.card td{font-size:11px;padding:8px 0}.stack{margin-top:18px}footer{font-size:10px;letter-spacing:.01em}#station-address{color:#7db5d6}@media(max-width:1050px){.shell{padding:24px}.visual-grid.power-grid{grid-template-columns:1fr}.visual-grid.power-grid .chart-svg{height:195px}.visual-grid{grid-template-columns:1.2fr 1fr}.instrument-svg{height:245px}nav button{padding:13px 17px}}@media(max-width:700px){.shell{padding:19px 14px}.visual-grid,.visual-grid.plot-grid{grid-template-columns:1fr}.instrument-svg{height:260px}.pills{gap:8px;margin-top:20px}.pill{padding:11px}.pill-label{font-size:8px}.pill-value{font-size:12px}.pill-detail{font-size:9px}.header-right{max-width:43%}h1{font-size:25px}h1 span{display:none}.mode{font-size:13px}.eyebrow{font-size:9px}.subtitle{font-size:10px}nav{margin-left:-14px;margin-right:-14px;padding-left:4px}nav button{padding:12px 15px;font-size:11px}.section-heading h2{font-size:18px}.section-heading p{font-size:10px}.plot-toolbar{padding:12px}.plot-toolbar p{width:100%}.controls{padding:12px}.controls p{max-width:230px}.instrument-stats{gap:16px;font-size:10px}.chart-svg{height:180px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+@media(max-width:700px){nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow-x:visible;padding:4px 8px 0}nav button{min-width:0;width:100%;padding:11px 8px;text-align:center}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header>
+ <div><p class="eyebrow">VFPR / Ground station</p><h1>Flight telemetry<span> · live</span></h1><p class="subtitle">FC → Pi → LoRa → ESP32 → this browser</p></div>
+ <div class="header-right"><div class="mode" id="flight-mode">WAITING FOR FC</div><div class="subtitle" id="flight-state">No telemetry received</div><div class="subtitle" id="station-uptime">Station uptime --</div></div>
+</header>
+<div class="pills" aria-label="Independent pipeline connections">
+ <div class="pill"><span class="pill-label">Browser / ESP32</span><div class="pill-value tone-neutral" id="browser-state">Connecting</div><div class="pill-detail" id="browser-detail">Waiting for local API</div></div>
+ <div class="pill"><span class="pill-label">LoRa / aircraft</span><div class="pill-value tone-neutral" id="radio-state">Waiting</div><div class="pill-detail" id="radio-detail">No authenticated packet yet</div></div>
+ <div class="pill"><span class="pill-label">Pi / flight controller</span><div class="pill-value tone-neutral" id="fc-state">Waiting</div><div class="pill-detail" id="fc-detail">FC heartbeat age --</div></div>
+ <div class="pill"><span class="pill-label">Return path / ACK</span><div class="pill-value tone-neutral" id="ack-state">Waiting</div><div class="pill-detail" id="ack-detail">Round trip --</div></div>
+</div>
+<div id="notice" class="notice" role="status">Connect to the station Wi-Fi and keep this page open. A working webpage does not confirm the aircraft link.</div>
+<nav role="tablist" aria-label="Telemetry pages">
+ <button type="button" role="tab" id="tab-overview" data-tab="overview" aria-selected="true" aria-controls="page-content">Flight</button>
+ <button type="button" role="tab" id="tab-sensors" data-tab="sensors" aria-selected="false" aria-controls="page-content" tabindex="-1">Sensors</button>
+ <button type="button" role="tab" id="tab-power" data-tab="power" aria-selected="false" aria-controls="page-content" tabindex="-1">Power</button>
+ <button type="button" role="tab" id="tab-motors" data-tab="motors" aria-selected="false" aria-controls="page-content" tabindex="-1">Motors</button>
+ <button type="button" role="tab" id="tab-health" data-tab="health" aria-selected="false" aria-controls="page-content" tabindex="-1">Health</button>
+ <button type="button" role="tab" id="tab-pipeline" data-tab="pipeline" aria-selected="false" aria-controls="page-content" tabindex="-1">Pipeline</button>
+</nav>
+<section id="page-content" role="tabpanel" aria-labelledby="tab-overview">
+ <div class="section-heading"><h2 id="page-title">Overview</h2><p id="page-description">Latest values, with their source ages.</p></div>
+ <div id="visuals" class="visual-grid"></div>
+ <div id="metrics" class="grid"></div>
+ <div id="records" class="grid stack"></div>
+</section>
+<div class="controls"><div><strong>Terminal diagnostic prints</strong><p>Controls human-readable firmware logs. USB machine data stays active.</p></div><button type="button" id="terminal-toggle" class="toggle" aria-pressed="false" disabled>Waiting</button></div>
+<p id="control-message" class="control-message" role="status"></p>
+<details id="raw-details"><summary>Inspect the complete pipeline snapshot / JSON</summary><pre id="raw-json">Waiting for the station snapshot.</pre></details>
+<footer><span id="station-address">espground.local · offline ground station</span><span id="update-detail">No API response yet</span></footer>
+</main>
+<script>
+'use strict';
+(() => {
+  const byId = id => document.getElementById(id);
+  const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+  const finite = value => typeof value === 'number' && Number.isFinite(value);
+  const fmt = (value, decimals = 1) => finite(value) ? value.toFixed(decimals) : '--';
+  const ageText = value => finite(value) ? (value < 60 ? `${Math.max(0,value).toFixed(1)} s` : `${Math.floor(value/60)} m ${Math.floor(value%60)} s`) : '--';
+  const duration = value => finite(value) ? `${Math.floor(value/3600).toString().padStart(2,'0')}:${Math.floor(value%3600/60).toString().padStart(2,'0')}:${Math.floor(value%60).toString().padStart(2,'0')}` : '--';
+  const titles = {overview:'Flight deck',sensors:'Sensors & IMU',power:'Battery & power',motors:'Motors & RC',health:'Health & navigation',pipeline:'Telemetry pipeline'};
+  const descriptions = {overview:'Attitude, heading and the essential flight readings.',sensors:'Received IMU samples, pressure, vibration, range and optical flow.',power:'Battery voltage, current and calculated electrical power.',motors:'Reported output commands and ESC feedback. Commands do not confirm rotation.',health:'Sensor health, estimator, power and navigation.',pipeline:'Transport, radio settings, errors and device diagnostics.'};
+  const groups = {overview:['attitude','gps','position','battery','motion','rc'],sensors:['imus','pressures','vibration','distance','optical_flow'],power:['battery','batteries','power'],motors:['outputs','rc','esc'],health:['health','ekf','power','memory','mcu','local_position','navigation','mission','home','batteries']};
+  const names = {attitude:'Attitude',position:'Position estimate',gps:'GPS',battery:'System battery',motion:'Altitude & speed',rc:'RC inputs',imus:'IMU',pressures:'Barometer',batteries:'Battery',esc:'ESC feedback',vibration:'Vibration',outputs:'Actuator commands',ekf:'EKF estimator',health:'Sensor health',power:'FC power',memory:'Memory',mcu:'MCU',local_position:'Local N / E / D',navigation:'Navigation',mission:'Mission',home:'Home',distance:'Range sensor',optical_flow:'Optical flow'};
+  const labels = {roll_deg:'Roll · deg',pitch_deg:'Pitch · deg',yaw_deg:'Yaw · deg',roll_rate_deg_s:'Roll rate · deg/s',pitch_rate_deg_s:'Pitch rate · deg/s',yaw_rate_deg_s:'Yaw rate · deg/s',latitude_deg:'Latitude · deg',longitude_deg:'Longitude · deg',altitude_msl_m:'MSL altitude · m',relative_altitude_m:'Above home · m',north_m:'North · m',east_m:'East · m',down_m:'Down · m',north_m_s:'North speed · m/s',east_m_s:'East speed · m/s',down_m_s:'Down speed · m/s',heading_deg:'Heading · deg',fix_type:'Fix type',fix_label:'Fix',satellites:'Satellites',hdop:'HDOP',voltage_v:'Voltage · V',current_a:'Current · A',remaining_pct:'Remaining · %',load_pct:'FC load · %',airspeed_m_s:'Airspeed · m/s',groundspeed_m_s:'Groundspeed · m/s',throttle_pct:'Throttle · %',climb_m_s:'Climb · m/s',channel_count:'Channel count',rssi_raw:'RSSI · raw',channels:'Channels · µs / raw',acceleration_m_s2:'Acceleration XYZ · m/s²',gyro_rad_s:'Gyroscope XYZ · rad/s',magnetic_field_mgauss:'Magnetic XYZ · mG',temperature_c:'Temperature · °C',absolute_hpa:'Absolute pressure · hPa',differential_hpa:'Differential · hPa',consumed_mah:'Consumed · mAh',energy_wh:'Energy · Wh',cell_voltages_v:'Cells · V',rpm:'RPM',sample_count:'Samples',x_m_s2:'X · m/s²',y_m_s2:'Y · m/s²',z_m_s2:'Z · m/s²',clipping:'Clipping XYZ',port:'Output port',flags:'Flags',present:'Present mask',enabled:'Enabled mask',healthy:'Healthy mask',unhealthy_mask:'Fault mask',unhealthy:'Enabled sensor faults',vcc_v:'FC rail · V',servo_v:'Servo rail · V',free_bytes:'Free memory · bytes',min_voltage_v:'Minimum · V',max_voltage_v:'Maximum · V',bearing_deg:'Bearing · deg',target_bearing_deg:'Target bearing · deg',waypoint_distance_m:'Waypoint distance · m',altitude_error_m:'Altitude error · m',airspeed_error_m_s:'Airspeed error · m/s',cross_track_error_m:'Cross-track error · m',sequence:'Sequence',total:'Total',distance_m:'Distance · m',min_m:'Minimum · m',max_m:'Maximum · m',orientation:'Orientation',quality:'Quality · raw',flow_x:'Flow X · raw',flow_y:'Flow Y · raw',velocity_x_m_s:'Velocity X · m/s',velocity_y_m_s:'Velocity Y · m/s',ground_distance_m:'Ground distance · m',frequency_hz:'Frequency · Hz',bandwidth_hz:'Bandwidth · Hz',spreading_factor:'Spreading factor',coding_rate:'Coding rate denominator',sync_word:'Sync word',preamble:'Preamble symbols',tx_power_dbm:'LoRa conducted TX · dBm',duty_cycle:'LoRa duty limit',expected_period_ms:'Expected RF period · ms',last_rx_age_ms:'Last radio RX age · ms',last_rssi:'Last RSSI · dBm',last_snr:'Last SNR · dB',rssi:'RSSI · dBm',snr:'SNR · dB',usb_dropped:'USB dropped messages',terminal_print_enabled:'Terminal prints enabled',_radio_period_s:'Expected RF period · s',_air_ack_age_s:'Pi ACK age · s',_air_rtt_ms:'Pi round trip · ms',_air_link_status:'Pi downlink status'};
+  const severity = ['EMERGENCY','ALERT','CRITICAL','ERROR','WARNING','NOTICE','INFO','DEBUG'];
+  let snapshot = null, receivedAt = 0, requestStartedAt = 0, lastRtt = null, selected = 'overview';
+  let timer = null, inFlight = false, activeController = null, apiFailures = 0, controlBusy = false;
+  let detailsTimer=null, detailsInFlight=false, detailsController=null, detailsFailures=0, liveSeen=false;
+  let pageSignature=null, pageAges=[], rawDirty=false, lastRawAt=-Infinity, detailsVersion=0, detailsIdentity=null;
+  const recordTimes=new WeakMap(), recordPaths=new WeakMap(), currentRecords=new Map();
+  const LIVE_KEYS=new Set(['session','target','mode','armed','link','_radio_period_s','_air_ack_age_s','_air_rtt_ms','_air_link_status','elapsed_s','received_messages','bad_data_messages','cache','attitude','battery','gps','position','motion','rc','imus','status_text']);
+  const LIVE_STATION_KEYS=new Set(['uptime_ms','radio_ready','key_configured','protocol_version','cipher','nonce_ready','uplink_state','session','peer_session','last_sequence','last_rx_age_ms','rssi_dbm','snr_db','rx_valid','rx_missing','expected_period_ms','initial_stage','initial_error','telemetry_cache_error']);
+  const HISTORY_SECONDS=300, HISTORY_POINTS=180, SOURCE_JITTER_S=.08;
+  const histories=new Map(), axes=new Set([0,1,2]);
+  let historyIdentity=null, lastStationUptime=null, selectedImu=null, visualPage=null, visualNodes={};
+  const extraAge = () => receivedAt ? Math.max(0,(performance.now()-receivedAt)/1000) : 0;
+  const effectiveAge = record => isObject(record) && finite(record.age_s) ? record.age_s + Math.max(0,(performance.now()-(recordTimes.get(record)??receivedAt))/1000) : null;
+  function writeText(node,value) { const next=String(value); if(node.textContent!==next) node.textContent=next; }
+  function writeAttribute(node,key,value) { const next=String(value); if(node.getAttribute(key)!==next) node.setAttribute(key,next); }
+  function stampRecords(value,at,path='') {
+    if(Array.isArray(value)) { value.forEach((item,index)=>stampRecords(item,at,`${path}/${item?.id??index}`)); return; }
+    if(!isObject(value)) return;
+    if(finite(value.age_s)) { recordTimes.set(value,at); recordPaths.set(value,path); currentRecords.set(path,value); }
+    for(const [key,item] of Object.entries(value)) if(isObject(item)||Array.isArray(item)) stampRecords(item,at,path?`${path}/${key}`:key);
+  }
+  function valueSignature(value) {
+    return JSON.stringify(value,(key,item)=>key==='age_s'||key==='stale'?undefined:item);
+  }
+  // Keep live DOM nodes, selection, focus and native control state while changing
+  // only attributes/text that differ. Candidate trees are built only for new values.
+  function patchNode(target,wanted) {
+    for(const name of target.getAttributeNames()) if(!wanted.hasAttribute(name)) target.removeAttribute(name);
+    for(const name of wanted.getAttributeNames()) writeAttribute(target,name,wanted.getAttribute(name));
+    if(typeof wanted.className==='string' && target.className!==wanted.className) target.className=wanted.className;
+    target._agePath=wanted._agePath; target._ageRecord=wanted._ageRecord; target._ageKind=wanted._ageKind;
+    const next=[...wanted.childNodes], old=[...target.childNodes];
+    for(let index=0;index<next.length;index++) {
+      const child=next[index], existing=old[index];
+      if(!existing) target.append(child);
+      else if(existing.nodeType!==child.nodeType || existing.nodeName!==child.nodeName) target.replaceChild(child,existing);
+      else if(child.nodeType===3) { if(existing.nodeValue!==child.nodeValue) existing.nodeValue=child.nodeValue; }
+      else patchNode(existing,child);
+    }
+    for(let index=next.length;index<old.length;index++) target.removeChild(old[index]);
+  }
+  function collectAgeNodes(node) {
+    if(node._agePath || node._ageRecord) pageAges.push(node);
+    for(const child of node.children??[]) collectAgeNodes(child);
+  }
+  function refreshAges() {
+    for(const node of pageAges) {
+      const record=node._agePath?currentRecords.get(node._agePath):node._ageRecord;
+      const age=effectiveAge(record), period=snapshot?.telemetry?._radio_period_s;
+      if(node._ageKind==='message') { writeText(node,`${severity[record?.severity]??`SEVERITY ${text(record?.severity)}`} · ${ageText(age)} ago`); continue; }
+      const stale=record?.stale===true || (finite(age)&&age>Math.max(15,(finite(period)?period:5)*3));
+      writeText(node,!isObject(record)?'WAITING':`${stale?'STALE':'SOURCE'} ${ageText(age)}`);
+      node.className=stale?'age stale':'age';
+    }
+  }
+  const label = key => labels[key] || key.replace(/^_/,'').replace(/_/g,' ').replace(/\b\w/g,letter=>letter.toUpperCase());
+  const text = value => {
+    if (value === null || value === undefined || (typeof value === 'number' && !finite(value))) return '--';
+    if (typeof value === 'boolean') return value ? 'yes' : 'no';
+    if (typeof value === 'number') return Number.isInteger(value) ? String(value) : String(Number(value.toFixed(4)));
+    if (Array.isArray(value)) return value.length ? value.map((item,index)=>isObject(item)?`${index+1}: ${JSON.stringify(item)}`:text(item)).join(' / ') : 'none';
+    return isObject(value) ? JSON.stringify(value,null,2) : String(value);
+  };
+  function element(tag, className, content) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (content !== undefined) node.textContent = content;
+    return node;
+  }
+  function status(id, state, detail, tone) {
+    const node = byId(`${id}-state`);
+    writeText(node,state);
+    writeAttribute(node,'class',`pill-value tone-${tone}`);
+    writeText(byId(`${id}-detail`),detail);
+  }
+  function ageBadge(record) {
+    if (!isObject(record)) return element('span','age','WAITING');
+    const age = effectiveAge(record);
+    const period = snapshot?.telemetry?._radio_period_s;
+    const stale = record.stale === true || (finite(age) && age > Math.max(15,(finite(period)?period:5)*3));
+    const node=element('span',stale?'age stale':'age',`${stale?'STALE':'SOURCE'} ${ageText(age)}`);
+    node._agePath=recordPaths.get(record); node._ageRecord=record;
+    return node;
+  }
+  function card(title, record, withAge = true) {
+    const node = element('article','card');
+    const head = element('div','card-head');
+    head.append(element('h3','',title));
+    if (withAge) head.append(ageBadge(record));
+    const body = element('div','card-body');
+    node.append(head,body);
+    return {node,body};
+  }
+  function recordCard(title, record, options = {}) {
+    const result = card(title,record,!options.noAge);
+    if (!isObject(record)) { result.body.append(element('div','empty','Waiting / unavailable')); return result.node; }
+    const table = element('table');
+    let rows = 0;
+    for (const [key,value] of Object.entries(record)) {
+      if (key==='age_s' || key==='stale') continue;
+      const row = element('tr');
+      row.append(element('td','',label(key)),element('td',isObject(value)?'data-wide':'',text(value)));
+      table.append(row); rows++;
+    }
+    if (rows) result.body.append(table); else result.body.append(element('div','empty','No fields reported'));
+    return result.node;
+  }
+  function addRecords(container, key, value) {
+    if (Array.isArray(value)) {
+      if (!value.length) container.append(recordCard(`${names[key]||label(key)} · waiting`,null));
+      else value.forEach((record,index)=>container.append(recordCard(`${names[key]||label(key)} ${record?.id??index}`,record)));
+    } else container.append(recordCard(names[key]||label(key),value));
+  }
+  function metric(title, value, unit, note, record) {
+    const result = card(title,record);
+    const main = element('div','metric',value);
+    if (unit) main.append(element('small','',` ${unit}`));
+    result.body.append(main,element('div','metric-note',note));
+    return result.node;
+  }
+  function overviewMetrics(telemetry) {
+    const cards = [];
+    cards.push(metric('Battery',fmt(telemetry.battery?.voltage_v,2),'V',`${fmt(telemetry.battery?.current_a,2)} A · ${fmt(telemetry.battery?.remaining_pct,0)}% remaining`,telemetry.battery));
+    cards.push(metric('Attitude',`${fmt(telemetry.attitude?.roll_deg)} / ${fmt(telemetry.attitude?.pitch_deg)}`,'deg',`Roll / pitch · yaw ${fmt(telemetry.attitude?.yaw_deg)}°`,telemetry.attitude));
+    cards.push(metric('Above home',fmt(telemetry.position?.relative_altitude_m),'m',`Climb ${fmt(telemetry.motion?.climb_m_s)} m/s · ground ${fmt(telemetry.motion?.groundspeed_m_s)} m/s`,telemetry.position));
+    const gps = telemetry.gps;
+    const haveFix = finite(gps?.fix_type) && gps.fix_type >= 2;
+    const coordinates = haveFix ? `${fmt(telemetry.position?.latitude_deg,7)}, ${fmt(telemetry.position?.longitude_deg,7)}` : 'Position unavailable without a GPS fix';
+    cards.push(metric('GPS',gps?.fix_label??'--','',`${text(gps?.satellites)} satellites · HDOP ${fmt(gps?.hdop,2)} · ${coordinates}`,gps));
+    cards.push(metric('FC load',fmt(telemetry.battery?.load_pct),'%','Flight-controller processing load',telemetry.battery));
+    const radioAge = finite(snapshot?.station?.last_rx_age_ms)?snapshot.station.last_rx_age_ms/1000:null;
+    cards.push(metric('Radio signal',fmt(snapshot?.station?.rssi_dbm??snapshot?.station?.rssi??snapshot?.station?.last_rssi),'dBm',`SNR ${fmt(snapshot?.station?.snr_db??snapshot?.station?.snr??snapshot?.station?.last_snr)} dB · missing ${text(snapshot?.station?.rx_missing)}`,currentRecords.get('@radio')??null));
+    return cards;
+  }
+  function statusMessages(telemetry) {
+    const result = card('FC status messages',null,false);
+    result.node.classList.add('wide');
+    if (!telemetry.status_text?.length) result.body.append(element('div','empty','No status messages received'));
+    else {
+      const list = element('ul','status-list');
+      telemetry.status_text.forEach(message=>{
+        const row = element('li');
+        const stamp=element('small','',`${severity[message.severity]??`SEVERITY ${text(message.severity)}`} · ${ageText(effectiveAge(message))} ago`);
+        stamp._agePath=recordPaths.get(message); stamp._ageRecord=message; stamp._ageKind='message'; row.append(stamp);
+        row.append(element('span',message.severity<=3?'tone-bad':'',text(message.text)));
+        list.append(row);
+      });
+      result.body.append(list);
+    }
+    return result.node;
+  }
+  function svgElement(tag, attributes={}, content) {
+    const node=document.createElementNS('http://www.w3.org/2000/svg',tag);
+    for (const [key,value] of Object.entries(attributes)) node.setAttribute(key,String(value));
+    if (content!==undefined) node.textContent=content;
+    return node;
+  }
+  function identified(tag,id,className,content) {
+    const node=element(tag,className,content); node.setAttribute('id',id); return node;
+  }
+  function recordState(record) {
+    if (!isObject(record) || !finite(record.age_s)) return 'waiting';
+    const age=effectiveAge(record), period=snapshot?.telemetry?._radio_period_s;
+    return record.stale===true || apiFailures>0 || extraAge()>6 || snapshot?.station?.radio_ready===false ||
+      snapshot?.station?.uplink_state==='lost' || age>Math.max(15,(finite(period)?period:5)*3) ? 'stale':'live';
+  }
+  function headingDegrees(value) { return finite(value)?((value%360)+360)%360:null; }
+  function powerWatts(record) {
+    return finite(record?.voltage_v) && finite(record?.current_a) && finite(record.voltage_v*record.current_a)
+      ? record.voltage_v*record.current_a:null;
+  }
+  function markGaps() { for (const history of histories.values()) history.pendingGap=true; }
+  function trimHistory(history,now) {
+    while (history.samples.length && (history.samples[0].t<now-HISTORY_SECONDS || history.samples.length>HISTORY_POINTS)) { history.samples.shift(); history.version++; }
+  }
+  function captureHistory(value) {
+    const telemetry=value.telemetry, station=value.station, now=performance.now()/1000;
+    const identity=`${station.session??''}/${telemetry.session??''}`;
+    const uptime=finite(station.uptime_ms)?station.uptime_ms/1000:null;
+    if ((historyIdentity!==null && identity!==historyIdentity) ||
+        (finite(uptime) && finite(lastStationUptime) && uptime<lastStationUptime-.1)) {
+      histories.clear(); selectedImu=null;
+    }
+    historyIdentity=identity;
+    if (finite(uptime)) lastStationUptime=uptime;
+    const sourceClock=finite(uptime)?uptime:finite(telemetry.cache?.session_age_s)?telemetry.cache.session_age_s:now;
+    const period=finite(telemetry._radio_period_s)?telemetry._radio_period_s:5;
+    const add=(key,record,values)=>{
+      let history=histories.get(key);
+      if (!history) { history={samples:[],lastSource:null,pendingGap:false,version:0}; histories.set(key,history); }
+      trimHistory(history,now);
+      if (recordState(record)!=='live' || !values.some(finite)) { history.pendingGap=true; return; }
+      const source=sourceClock-record.age_s;
+      if (finite(history.lastSource) && source<=history.lastSource+SOURCE_JITTER_S) return;
+      const last=history.samples.at(-1), t=now-record.age_s;
+      if (last && t<last.t-SOURCE_JITTER_S) { history.pendingGap=true; return; }
+      const gap=history.pendingGap || (last && source-history.lastSource>Math.max(15,period*3));
+      history.samples.push({t,source,values:values.map(value=>finite(value)?value:null),gap:!!gap});
+      history.version++;
+      history.lastSource=source; history.pendingGap=false;
+      trimHistory(history,now);
+    };
+    const battery=telemetry.battery;
+    add('battery',battery,[battery?.voltage_v,battery?.current_a,powerWatts(battery)]);
+    const presentImus=new Set();
+    if (Array.isArray(telemetry.imus)) telemetry.imus.forEach((record,index)=>{
+      const id=String(record?.id??index); presentImus.add(`imu:${id}`);
+      const acceleration=Array.isArray(record?.acceleration_m_s2)?record.acceleration_m_s2:[];
+      const gyro=Array.isArray(record?.gyro_rad_s)?record.gyro_rad_s:[];
+      add(`imu:${id}`,record,[0,1,2].map(axis=>acceleration[axis]).concat([0,1,2].map(axis=>finite(gyro[axis])?gyro[axis]*180/Math.PI:null)));
+    });
+    for (const [key,history] of histories) if (key.startsWith('imu:') && !presentImus.has(key)) history.pendingGap=true;
+  }
+  function instrumentCard(title,id) {
+    const result=card(title,null,false); result.node.classList.add('instrument-card');
+    const state=identified('span',`${id}-state`,'instrument-state waiting','WAITING');
+    result.node.children[0].append(state);
+    const layout=identified('div',`instrument-${id}`,'instrument-layout'); layout.setAttribute('data-state','waiting');
+    const svg=svgElement('svg',{viewBox:id==='horizon'?'0 0 360 240':'0 0 360 360',class:'instrument-svg',role:'img','aria-label':title});
+    const overlay=identified('div',`${id}-overlay`,'instrument-overlay','WAITING FOR DATA');
+    layout.append(svg,overlay); result.body.append(layout);
+    return {...result,state,layout,svg,overlay};
+  }
+  function createHorizon(container) {
+    const result=instrumentCard('Artificial horizon','horizon');
+    const scene=svgElement('g',{id:'horizon-scene',transform:'translate(180 120)'});
+    scene.append(svgElement('rect',{x:-650,y:-650,width:1300,height:650,fill:'#24678a'}),svgElement('rect',{x:-650,y:0,width:1300,height:650,fill:'#79543e'}),svgElement('line',{x1:-650,x2:650,y1:0,y2:0,stroke:'#dce9e5','stroke-width':2}));
+    for (let pitch=-60;pitch<=60;pitch+=10) {
+      if (!pitch) continue;
+      const y=-pitch*2.5, width=Math.abs(pitch)%20===0?56:36;
+      scene.append(svgElement('line',{x1:-width/2,x2:width/2,y1:y,y2:y,stroke:'#e0edf0','stroke-width':1,opacity:.82}));
+      scene.append(svgElement('text',{x:width/2+7,y:y+3,fill:'#e0edf0','font-size':8},String(Math.abs(pitch))),svgElement('text',{x:-width/2-7,y:y+3,fill:'#e0edf0','font-size':8,'text-anchor':'end'},String(Math.abs(pitch))));
+    }
+    result.svg.append(scene);
+    const bank=svgElement('g',{transform:'translate(180 120)',fill:'none',stroke:'#d1e3ed','stroke-width':1.3});
+    bank.append(svgElement('path',{d:'M -91 -52 A 105 105 0 0 1 91 -52',opacity:.65}));
+    for (const angle of [-60,-45,-30,-20,-10,0,10,20,30,45,60]) {
+      const r=angle*Math.PI/180, inner=angle%30===0?92:98;
+      bank.append(svgElement('line',{x1:Math.sin(r)*inner,y1:-Math.cos(r)*inner,x2:Math.sin(r)*106,y2:-Math.cos(r)*106}));
+    }
+    bank.append(svgElement('path',{d:'M -5 -88 L 0 -96 L 5 -88 Z',fill:'#e7f5fa',stroke:'none'}));
+    result.svg.append(bank,svgElement('path',{d:'M 113 120 L 157 120 L 168 128 M 247 120 L 203 120 L 192 128 M 175 120 L 185 120',fill:'none',stroke:'#ffe4a8','stroke-width':3,'stroke-linecap':'round'}),svgElement('circle',{cx:180,cy:120,r:3,fill:'#ffe4a8'}));
+    const stats=element('div','instrument-stats');
+    stats.append(identified('span','horizon-roll','','ROLL --°'),identified('span','horizon-pitch','','PITCH --°'));
+    result.body.append(stats,element('p','instrument-hint','Flight-controller attitude estimate · roll / pitch'));
+    container.append(result.node); visualNodes.horizon={...result,scene};
+  }
+  function createCompass(container) {
+    const result=instrumentCard('Compass / heading','compass');
+    result.svg.append(svgElement('circle',{cx:180,cy:180,r:151,fill:'#0b1825',stroke:'#294255','stroke-width':1}));
+    const rose=svgElement('g',{id:'compass-rose',transform:'rotate(0 180 180)'});
+    for (let angle=0;angle<360;angle+=5) {
+      const radians=angle*Math.PI/180, major=angle%30===0, inner=major?124:132, outer=140;
+      rose.append(svgElement('line',{x1:180+Math.sin(radians)*inner,y1:180-Math.cos(radians)*inner,x2:180+Math.sin(radians)*outer,y2:180-Math.cos(radians)*outer,stroke:angle===0?'#f4ba8c':'#94b2c7','stroke-width':major?2:1,opacity:major?1:.55}));
+      if (major) {
+        const cardinals={0:'N',90:'E',180:'S',270:'W'};
+        rose.append(svgElement('text',{x:180+Math.sin(radians)*105,y:185-Math.cos(radians)*105,'text-anchor':'middle',fill:angle===0?'#ffd0a2':major?'#d5e6f2':'#96b2c8','font-size':angle%90===0?19:12,'font-weight':angle%90===0?600:400},cardinals[angle]??String(angle)));
+      }
+    }
+    result.svg.append(rose,svgElement('path',{d:'M 180 25 L 173 40 L 187 40 Z',fill:'#f4c48a'}),svgElement('circle',{cx:180,cy:180,r:67,fill:'#111f2d',stroke:'#2c4559','stroke-width':1}),svgElement('path',{d:'M180 131 L186 165 L204 185 L204 191 L184 180 L184 207 L191 214 L191 218 L180 214 L169 218 L169 214 L176 207 L176 180 L156 191 L156 185 L174 165 Z',fill:'#b7d7e7',opacity:.5}));
+    const heading=svgElement('text',{id:'compass-heading',x:180,y:244,'text-anchor':'middle',fill:'#edf8ff','font-size':31,'font-weight':550},'---°');
+    result.svg.append(heading,svgElement('text',{x:180,y:265,'text-anchor':'middle',fill:'#7897af','font-size':9,'letter-spacing':2},'HEADING'));
+    result.body.append(element('p','instrument-hint','FC yaw estimate · north at 000°'));
+    container.append(result.node); visualNodes.compass={...result,rose,heading};
+  }
+  function updateInstrumentState(result,state,record) {
+    writeText(result.state,state==='live'?`LIVE · ${ageText(effectiveAge(record))}`:state==='stale'?`STALE · ${ageText(effectiveAge(record))}`:'WAITING');
+    writeAttribute(result.state,'class',`instrument-state ${state}`);
+    writeAttribute(result.layout,'data-state',state);
+    result.overlay.hidden=state==='live';
+    writeText(result.overlay,state==='stale'?'STALE · LAST READING':'WAITING FOR DATA');
+  }
+  function updateInstruments(telemetry) {
+    const attitude=telemetry.attitude, roll=attitude?.roll_deg, pitch=attitude?.pitch_deg;
+    const horizon=visualNodes.horizon;
+    const valid=finite(roll)&&finite(pitch), state=valid?recordState(attitude):'waiting';
+    updateInstrumentState(horizon,state,attitude);
+    writeAttribute(horizon.layout,'data-roll',valid?String(roll):''); writeAttribute(horizon.layout,'data-pitch',valid?String(pitch):'');
+    writeAttribute(horizon.scene,'transform',valid?`translate(180 120) rotate(${-roll}) translate(0 ${Math.max(-90,Math.min(90,pitch))*2.5})`:'translate(180 120)');
+    writeAttribute(horizon.svg,'aria-label',valid?`Artificial horizon: roll ${fmt(roll)} degrees, pitch ${fmt(pitch)} degrees, ${state}`:'Artificial horizon: attitude unavailable');
+    writeText(byId('horizon-roll'),`ROLL ${fmt(roll)}°`); writeText(byId('horizon-pitch'),`PITCH ${fmt(pitch)}°`);
+    const compass=visualNodes.compass, heading=headingDegrees(attitude?.yaw_deg);
+    const compassState=finite(heading)?recordState(attitude):'waiting';
+    updateInstrumentState(compass,compassState,attitude);
+    writeAttribute(compass.layout,'data-heading',finite(heading)?String(heading):'');
+    writeAttribute(compass.rose,'transform',`rotate(${finite(heading)?-heading:0} 180 180)`);
+    writeText(compass.heading,finite(heading)?`${String(Math.round(heading)%360).padStart(3,'0')}°`:'---°');
+    writeAttribute(compass.svg,'aria-label',finite(heading)?`Compass heading ${fmt(heading,0)} degrees, ${compassState}`:'Compass heading unavailable');
+  }
+  function chartCard(container,title,id,unit) {
+    const result=card(title,null,false); result.node.classList.add('chart-card');
+    const state=identified('span',`${id}-state`,'chart-status','WAITING'); result.node.children[0].append(state);
+    const current=identified('div',`${id}-current`,'plot-current');
+    const svg=svgElement('svg',{id,viewBox:'0 0 520 205',class:'chart-svg',role:'img','aria-label':`${title}, ${unit}, waiting for samples`});
+    const meta=identified('div',`${id}-meta`,'plot-meta');
+    const countLabel=element('span'), ageLabel=element('span'); meta.append(countLabel,ageLabel);
+    result.body.append(current,svg,meta); container.append(result.node);
+    visualNodes.charts.set(id,{...result,svg,current,meta,state,title,unit,countLabel,ageLabel});
+  }
+  function chartSeries(history,indices) {
+    const now=performance.now()/1000;
+    if (history) trimHistory(history,now);
+    const result=[]; let gap=false;
+    for (const sample of history?.samples??[]) {
+      const values=indices.map(index=>sample.values[index]);
+      if (sample.gap) gap=true;
+      if (!values.some(finite)) { gap=true; continue; }
+      result.push({...sample,values,gap:sample.gap||gap}); gap=false;
+    }
+    return result;
+  }
+  function drawChart(id,history,record,indices,colors,minimumSpan) {
+    const chart=visualNodes.charts.get(id), samples=chartSeries(history,indices), now=performance.now()/1000;
+    const reported=id.startsWith('imu-')?
+      [0,1,2].map(axis=>record?.acceleration_m_s2?.[axis]).concat([0,1,2].map(axis=>finite(record?.gyro_rad_s?.[axis])?record.gyro_rad_s[axis]*180/Math.PI:null)):
+      [record?.voltage_v,record?.current_a,powerWatts(record)];
+    const currentValues=indices.map(index=>finite(reported[index])?reported[index]:null);
+    const latest=samples.at(-1), state=currentValues.some(finite)?recordState(record):'waiting';
+    if(!chart.legendNodes) {
+      chart.legendNodes=indices.map((_,index)=>element('span',indices.length===1?'':`axis-${['x','y','z'][index]}`));
+      chart.current.append(...chart.legendNodes,element('span','plot-unit',chart.unit));
+    }
+    chart.legendNodes.forEach((node,index)=>{
+      writeText(node,`${indices.length===1?'':`${['X','Y','Z'][index]} `}${fmt(currentValues[index],2)}`);
+      if(indices.length>1) node.style.opacity=axes.has(index)?'1':'.4';
+    });
+    writeText(chart.state,state==='live'?'LIVE':state==='stale'?'STALE':'WAITING');
+    chart.state.className=`chart-status ${state==='stale'?'tone-warn':state==='live'?'tone-good':''}`;
+    writeText(chart.countLabel,`${samples.length} received samples · 5 min history`);
+    writeText(chart.ageLabel,`Age ${ageText(effectiveAge(record))}`);
+    const chartToken=JSON.stringify([history?.version??0,record?.id??selectedImu,currentValues,state,[...axes],Math.floor(now/5)]);
+    if(chart.renderToken===chartToken) return;
+    chart.renderToken=chartToken;
+    const canvas=svgElement('svg',{id,viewBox:'0 0 520 205',class:'chart-svg',role:'img'});
+    const selectedAxes=indices.length===1?[0]:indices.map((_,index)=>index).filter(index=>axes.has(index));
+    const values=samples.flatMap(sample=>selectedAxes.map(index=>sample.values[index]).filter(finite));
+    let low=values.length?Math.min(...values):0, high=values.length?Math.max(...values):1;
+    const span=Math.max(minimumSpan,high-low), middle=(low+high)/2;
+    low=middle-span*.65; high=middle+span*.65;
+    const tickStep=(high-low)/4;
+    const tickPrecision=Math.max(0,Math.min(4,Math.ceil(-Math.log10(tickStep))));
+    const left=49,right=506,top=15,bottom=164, width=right-left,height=bottom-top;
+    const x=value=>left+Math.max(0,Math.min(1,(value-(now-HISTORY_SECONDS))/HISTORY_SECONDS))*width;
+    const y=value=>bottom-(value-low)/(high-low)*height;
+    for (let tick=0;tick<=4;tick++) {
+      const yy=top+height*tick/4, value=high-(high-low)*tick/4;
+      canvas.append(svgElement('line',{x1:left,y1:yy,x2:right,y2:yy,stroke:'#263c4d','stroke-width':.7}),svgElement('text',{class:'y-axis-label',x:left-9,y:yy+3,'text-anchor':'end',fill:'#7896ac','font-size':9},fmt(value,tickPrecision)));
+    }
+    for (let tick=0;tick<=5;tick++) {
+      const xx=left+width*tick/5;
+      canvas.append(svgElement('line',{x1:xx,y1:top,x2:xx,y2:bottom,stroke:'#1e3445','stroke-width':.6}),svgElement('text',{x:xx,y:bottom+19,'text-anchor':tick===0?'start':tick===5?'end':'middle',fill:'#7896ac','font-size':9},tick===5?'now':`−${5-tick}m`));
+    }
+    const runs=[]; let run=[];
+    for (const sample of samples) { if (sample.gap && run.length) { runs.push(run); run=[]; } run.push(sample); }
+    if (run.length) runs.push(run);
+    let visibleLines=0;
+    selectedAxes.forEach(axis=>{
+      for (const segment of runs) {
+        let points=[];
+        const flush=()=>{
+          if (!points.length) return;
+          if (points.length===1) canvas.append(svgElement('circle',{cx:points[0][0],cy:points[0][1],r:2.5,fill:colors[axis],'data-axis':['x','y','z'][axis]}));
+          else { canvas.append(svgElement('polyline',{points:points.map(point=>point.map(value=>value.toFixed(2)).join(',')).join(' '),fill:'none',stroke:colors[axis],'stroke-width':1.8,'stroke-linejoin':'round','stroke-linecap':'round','data-axis':['x','y','z'][axis]})); visibleLines++; }
+          points=[];
+        };
+        segment.forEach(sample=>{ const value=sample.values[axis]; if (finite(value)) points.push([x(sample.t),y(value)]); else flush(); }); flush();
+      }
+      if (finite(latest?.values[axis])) canvas.append(svgElement('circle',{cx:x(latest.t),cy:y(latest.values[axis]),r:3,fill:colors[axis],stroke:'#101c28','stroke-width':1,'data-axis':['x','y','z'][axis]}));
+    });
+    if (!samples.length) canvas.append(svgElement('text',{x:(left+right)/2,y:90,'text-anchor':'middle',class:'plot-empty'},'Waiting for received samples'));
+    else if (!selectedAxes.length) canvas.append(svgElement('text',{x:(left+right)/2,y:90,'text-anchor':'middle',class:'plot-empty'},'Select an axis above'));
+    canvas.setAttribute('data-samples',samples.length); canvas.setAttribute('data-segments',runs.length);
+    canvas.setAttribute('data-latest',JSON.stringify(latest?(indices.length===1?latest.values[0]:latest.values):null));
+    canvas.setAttribute('data-current',JSON.stringify(indices.length===1?currentValues[0]:currentValues));
+    canvas.setAttribute('aria-label',`${chart.title}, ${chart.unit}, ${samples.length} received samples, ${state}`);
+    patchNode(chart.svg,canvas);
+  }
+  function createImuControls(container) {
+    const toolbar=element('div','plot-toolbar'), label=element('label','','IMU source');
+    const select=identified('select','imu-select',''); select.setAttribute('aria-label','Select IMU source');
+    label.append(select); toolbar.append(label);
+    const buttons=element('div','axes-toggle'); buttons.setAttribute('aria-label','Visible IMU axes');
+    ['X','Y','Z'].forEach((axis,index)=>{
+      const button=identified('button',`axis-${axis.toLowerCase()}`,`axis-button axis-${axis.toLowerCase()}`,axis);
+      button.setAttribute('type','button'); button.setAttribute('aria-pressed',String(axes.has(index)));
+      button.setAttribute('aria-label',`Show ${axis} axis`);
+      button.addEventListener('click',()=>{ if (axes.has(index)) axes.delete(index); else axes.add(index); button.setAttribute('aria-pressed',String(axes.has(index))); renderVisuals(); });
+      buttons.append(button);
+    });
+    toolbar.append(buttons,element('p','','Received samples only · gaps preserve missing data · history clears after restart'));
+    select.addEventListener('change',()=>{ selectedImu=select.value; renderVisuals(); });
+    container.append(toolbar); visualNodes.imuSelect=select; visualNodes.imuToken=null;
+  }
+  function renderVisuals() {
+    const container=byId('visuals'), telemetry=snapshot?.telemetry??{};
+    if (visualPage!==selected) {
+      visualPage=selected; visualNodes={charts:new Map()}; container.replaceChildren();
+      container.className=`visual-grid ${selected==='sensors'?'plot-grid':selected==='power'?'power-grid':''}`;
+      if (selected==='overview') { createHorizon(container); createCompass(container); }
+      if (selected==='sensors') {
+        createImuControls(container);
+        chartCard(container,'Accelerometer · X / Y / Z','imu-accel-plot','m/s²');
+        chartCard(container,'Gyroscope · X / Y / Z','imu-gyro-plot','deg/s');
+      }
+      if (selected==='power') {
+        chartCard(container,'U · Battery voltage','power-voltage-plot','V');
+        chartCard(container,'I · Battery current','power-current-plot','A');
+        chartCard(container,'P · Electrical power','power-watts-plot','W');
+      }
+    }
+    if (selected==='overview') updateInstruments(telemetry);
+    if (selected==='sensors') {
+      const records=Array.isArray(telemetry.imus)?telemetry.imus:[], options=records.map((record,index)=>String(record?.id??index));
+      if (!options.includes(selectedImu)) selectedImu=options[0]??null;
+      const token=JSON.stringify(options);
+      if (token!==visualNodes.imuToken) {
+        const select=visualNodes.imuSelect; select.replaceChildren();
+        if (!options.length) { const option=element('option','','No IMU received'); option.setAttribute('value',''); select.append(option); }
+        options.forEach(id=>{ const option=element('option','',`IMU ${id}`); option.setAttribute('value',id); select.append(option); });
+        select.disabled=!options.length; visualNodes.imuToken=token;
+      }
+      visualNodes.imuSelect.value=selectedImu??'';
+      const record=records.find((record,index)=>String(record?.id??index)===selectedImu), history=histories.get(`imu:${selectedImu}`);
+      drawChart('imu-accel-plot',history,record,[0,1,2],['#80caff','#92e2b3','#f3b27a'],1);
+      drawChart('imu-gyro-plot',history,record,[3,4,5],['#80caff','#92e2b3','#f3b27a'],1);
+    }
+    if (selected==='power') {
+      const history=histories.get('battery'), record=telemetry.battery;
+      drawChart('power-voltage-plot',history,record,[0],['#80caff'],.2);
+      drawChart('power-current-plot',history,record,[1],['#92e2b3'],.1);
+      drawChart('power-watts-plot',history,record,[2],['#f3b27a'],1);
+    }
+  }
+  function renderPage() {
+    const telemetry = isObject(snapshot?.telemetry)?snapshot.telemetry:{};
+    writeText(byId('page-title'),titles[selected]);
+    writeText(byId('page-description'),descriptions[selected]);
+    writeAttribute(byId('page-content'),'aria-labelledby',`tab-${selected}`);
+    renderVisuals();
+    const signature=valueSignature(selected==='pipeline'?{page:selected,detailsVersion}: {
+      page:selected,records:(groups[selected]??[]).map(key=>telemetry[key]),
+      status:selected==='overview'||selected==='health'?telemetry.status_text:null,
+      radio:selected==='overview'?[snapshot?.station?.rssi_dbm,snapshot?.station?.snr_db,snapshot?.station?.rx_missing]:null
+    });
+    if(signature===pageSignature) { refreshAges(); return; }
+    pageSignature=signature;
+    const metrics=element('div','grid'), records=element('div','grid stack');
+    metrics.setAttribute('id','metrics'); records.setAttribute('id','records');
+    if (selected === 'overview') metrics.append(...overviewMetrics(telemetry));
+    if (selected === 'power') {
+      metrics.append(metric('U · Voltage',fmt(telemetry.battery?.voltage_v,2),'V','System battery',telemetry.battery),
+        metric('I · Current',fmt(telemetry.battery?.current_a,2),'A','Reported current',telemetry.battery),
+        metric('P · Power',fmt(powerWatts(telemetry.battery),2),'W','Calculated: voltage × current',telemetry.battery));
+    }
+    if (selected === 'pipeline') {
+      records.append(recordCard('Ground station / radio',snapshot?.station,{noAge:true}),recordCard('ESP32 device',snapshot?.device,{noAge:true}));
+      const known = new Set(Object.values(groups).flat());
+      known.add('status_text');
+      const metadata = {};
+      for (const [key,value] of Object.entries(telemetry)) if (!known.has(key)) metadata[key]=value;
+      records.append(recordCard('Aircraft metadata / results',metadata,{noAge:true}));
+    } else {
+      groups[selected].forEach(key=>addRecords(records,key,telemetry[key]));
+      if (selected === 'overview' || selected === 'health') records.append(statusMessages(telemetry));
+    }
+    patchNode(byId('metrics'),metrics); patchNode(byId('records'),records);
+    pageAges=[]; collectAgeNodes(byId('metrics')); collectAgeNodes(byId('records')); refreshAges();
+  }
+  function renderHeader() {
+    const station = snapshot?.station??{}, telemetry = snapshot?.telemetry??{}, delay = extraAge();
+    if (document.hidden) status('browser','Paused','Tab hidden · polling resumes when visible','neutral');
+    else if (!receivedAt) status('browser',apiFailures?'Unavailable':'Connecting',apiFailures?'Cannot reach local API':'Waiting for local API',apiFailures?'bad':'neutral');
+    else if (apiFailures || delay > 3) status('browser',delay>6?'Connection lost':'Reconnecting',`Last API response ${ageText(delay)} ago`,delay>6?'bad':'warn');
+    else status('browser','Connected',`API ${fmt(lastRtt,0)} ms · snapshot ${ageText(delay)} ago`,'good');
+    let radio = station.uplink_state??'waiting';
+    const radioAge = finite(station.last_rx_age_ms)?station.last_rx_age_ms/1000+delay:null;
+    const period = finite(station.expected_period_ms)?station.expected_period_ms/1000:5;
+    if (finite(radioAge) && radioAge>period*8) radio='lost';
+    else if (finite(radioAge) && radioAge>period*3 && radio==='connected') radio='degraded';
+    status('radio',radio[0]?.toUpperCase()+radio.slice(1),finite(radioAge)?`Last authenticated RX ${ageText(radioAge)} ago`:(station.radio_ready===false?'Radio not initialized':'No authenticated packet yet'),radio==='connected'?'good':radio==='lost'?'bad':radio==='degraded'?'warn':'neutral');
+    const hbAge = finite(telemetry.link?.heartbeat_age_s)?telemetry.link.heartbeat_age_s+delay:null;
+    let fc = telemetry.link?.status??'waiting';
+    if (fc==='heartbeat_lost' || (finite(hbAge) && hbAge>Math.max(5,period*3))) fc='lost';
+    status('fc',fc[0]?.toUpperCase()+fc.slice(1),`FC heartbeat ${ageText(hbAge)} ago`,fc==='connected'?'good':fc==='lost'||fc==='disconnected'?'bad':'neutral');
+    let ack = telemetry._air_link_status??'waiting';
+    const ackAge = finite(telemetry._air_ack_age_s)?telemetry._air_ack_age_s+delay:null;
+    if (finite(ackAge) && ackAge>period*8) ack='lost';
+    status('ack',ack[0]?.toUpperCase()+ack.slice(1),`RTT ${fmt(telemetry._air_rtt_ms,0)} ms · ACK ${ageText(ackAge)} ago`,ack==='connected'?'good':ack==='lost'?'bad':ack==='degraded'?'warn':'neutral');
+    writeText(byId('flight-mode'),telemetry.mode??'WAITING FOR FC');
+    writeText(byId('flight-state'),typeof telemetry.armed==='boolean'?`${telemetry.armed?'ARMED':'DISARMED'} · FC ${text(telemetry.target?.system)}:${text(telemetry.target?.component)}`:'No telemetry received');
+    writeAttribute(byId('flight-state'),'class',telemetry.armed===true?'subtitle tone-warn':'subtitle');
+    writeText(byId('station-uptime'),`Station uptime ${duration(finite(station.uptime_ms)?station.uptime_ms/1000+delay:null)}`);
+    writeText(byId('station-address'),`${snapshot?.device?.web_hostname??'espground.local'} · offline ground station`);
+    const notice = byId('notice');
+    const problems = [];
+    if (apiFailures || delay>6) problems.push('Browser connection interrupted. Displaying the last snapshot; ages keep advancing.');
+    if (detailsFailures && needsDetails()) problems.push('Detailed telemetry refresh unavailable; cached readings retain their age.');
+    if (radio==='lost' || radio==='degraded') problems.push(`Aircraft radio link ${radio}.`);
+    if (fc==='lost' || fc==='disconnected') problems.push('FC heartbeat is stale.');
+    if (station.key_configured===false) problems.push('Station build key is missing or invalid.');
+    if (station.nonce_ready===false) problems.push('Station encryption nonce counter is exhausted; restart the station.');
+    if (station.radio_ready===false) problems.push('LoRa radio is not ready. Check Pipeline diagnostics.');
+    writeText(notice,problems.join(' ') || 'Reading ages refer to the original FC data. -- means unavailable; a real zero stays zero.');
+    writeAttribute(notice,'class',problems.length?'notice warning':'notice');
+    const enabled = snapshot?.device?.terminal_print_enabled;
+    const toggle = byId('terminal-toggle');
+    toggle.disabled = controlBusy || typeof enabled!=='boolean' || !receivedAt || apiFailures>0 || delay>6;
+    writeText(toggle,controlBusy?'Saving…':typeof enabled==='boolean'?(enabled?'Prints on':'Prints off'):'Waiting');
+    writeAttribute(toggle,'aria-pressed',enabled===true?'true':'false');
+    writeText(byId('update-detail'),receivedAt?`Snapshot ${ageText(delay)} ago · API ${fmt(lastRtt,0)} ms`:'No API response yet');
+  }
+  function renderRaw(force=false) {
+    if(!byId('raw-details').open || !rawDirty || (!force && performance.now()-lastRawAt<1000)) return;
+    byId('raw-json').textContent=JSON.stringify(snapshot,(key,value)=>{
+      if(isObject(value)&&finite(value.age_s)) return {...value,age_s:effectiveAge(value)};
+      return value;
+    },2);
+    rawDirty=false; lastRawAt=performance.now();
+  }
+  function render() { if (apiFailures || extraAge()>6 || snapshot?.station?.uplink_state==='lost') markGaps(); renderHeader(); renderPage(); renderRaw(); }
+  const sourceIdentity=value=>`${value?.station?.session??''}/${value?.telemetry?.session??''}`;
+  const validSnapshot=value=>isObject(value)&&isObject(value.station)&&isObject(value.telemetry)&&isObject(value.device);
+  function mergeLive(value,at) {
+    const previousIdentity=liveSeen?sourceIdentity(snapshot):detailsIdentity;
+    if(snapshot && previousIdentity!==null && previousIdentity!==sourceIdentity(value)) {
+      snapshot=null; currentRecords.clear(); pageSignature=null; detailsVersion++;
+    }
+    const previous=snapshot??{station:{},device:{},telemetry:{}};
+    const extras={};
+    for(const [key,item] of Object.entries(previous.station)) if(!LIVE_STATION_KEYS.has(key)) extras[key]=item;
+    snapshot={station:{...extras,...value.station},device:value.device,telemetry:{...previous.telemetry,...value.telemetry}};
+    stampRecords(value.telemetry,at);
+    if(finite(value.station.last_rx_age_ms)) {
+      const radio={age_s:value.station.last_rx_age_ms/1000,stale:value.station.uplink_state!=='connected'};
+      recordPaths.set(radio,'@radio'); recordTimes.set(radio,at); currentRecords.set('@radio',radio);
+    } else currentRecords.delete('@radio');
+    receivedAt=at; liveSeen=true; rawDirty=true;
+    captureHistory(value);
+  }
+  function mergeDetails(value,at,startedAt=at) {
+    // A slow diagnostics response cannot resurrect a previous aircraft or
+    // replace a newer attitude with the full snapshot's older core readings.
+    if(liveSeen && sourceIdentity(snapshot)!==sourceIdentity(value)) return;
+    detailsIdentity=sourceIdentity(value);
+    const anchor=liveSeen && finite(value.station.uptime_ms) && finite(snapshot.station.uptime_ms)?
+      Math.min(at,receivedAt+value.station.uptime_ms-snapshot.station.uptime_ms):startedAt;
+    if(!snapshot) snapshot={station:{},device:{},telemetry:{}};
+    for(const [key,item] of Object.entries(value.telemetry)) {
+      if(LIVE_KEYS.has(key)) continue;
+      snapshot.telemetry[key]=item; stampRecords(item,anchor,key);
+    }
+    for(const [key,item] of Object.entries(value.station)) if(!LIVE_STATION_KEYS.has(key)) snapshot.station[key]=item;
+    if(!liveSeen) snapshot.device=value.device;
+    detailsVersion++; rawDirty=true;
+  }
+  function schedule(delay=250) {
+    if (timer!==null) clearTimeout(timer);
+    timer = document.hidden?null:setTimeout(poll,delay);
+  }
+  async function poll() {
+    timer=null;
+    if (document.hidden || inFlight) return;
+    inFlight=true;
+    const controller = new AbortController();
+    activeController=controller;
+    const timeout=setTimeout(()=>controller.abort(),2000);
+    requestStartedAt=performance.now();
+    try {
+      const response=await fetch('/api/live',{cache:'no-store',signal:controller.signal,credentials:'same-origin'});
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const value=await response.json();
+      if (!validSnapshot(value)) throw new Error('Invalid live snapshot');
+      const at=performance.now(); lastRtt=at-requestStartedAt; apiFailures=0;
+      mergeLive(value,at);
+    } catch (error) {
+      if (!document.hidden) apiFailures++;
+    } finally {
+      clearTimeout(timeout); activeController=null; inFlight=false; render(); schedule();
+    }
+  }
+  function needsDetails() { return ['sensors','power','motors','health','pipeline'].includes(selected)||byId('raw-details').open; }
+  function scheduleDetails(delay=3000) {
+    if(detailsTimer!==null) clearTimeout(detailsTimer);
+    detailsTimer=!document.hidden&&needsDetails()?setTimeout(pollDetails,delay):null;
+  }
+  async function pollDetails() {
+    detailsTimer=null;
+    if(document.hidden||!needsDetails()||detailsInFlight) return;
+    detailsInFlight=true;
+    const controller=new AbortController(); detailsController=controller;
+    const startedAt=performance.now();
+    const timeout=setTimeout(()=>controller.abort(),2000);
+    try {
+      const response=await fetch('/api/telemetry',{cache:'no-store',signal:controller.signal,credentials:'same-origin'});
+      if(!response.ok) throw new Error(`HTTP ${response.status}`);
+      const value=await response.json();
+      if(!validSnapshot(value)) throw new Error('Invalid details snapshot');
+      mergeDetails(value,performance.now(),startedAt); detailsFailures=0;
+      renderPage(); renderRaw(true);
+    } catch(error) { if(!document.hidden&&needsDetails()) detailsFailures++; }
+    finally { clearTimeout(timeout); detailsController=null; detailsInFlight=false; renderHeader(); scheduleDetails(); }
+  }
+  function selectTab(tab) {
+    if (!Object.hasOwn(titles,tab)) return;
+    selected=tab;
+    document.querySelectorAll('[data-tab]').forEach(button=>{
+      const active=button.dataset.tab===tab;
+      button.setAttribute('aria-selected',String(active)); button.tabIndex=active?0:-1;
+    });
+    renderPage();
+    if(needsDetails()) { if(!detailsInFlight) scheduleDetails(0); }
+    else { if(detailsTimer!==null) clearTimeout(detailsTimer); detailsTimer=null; detailsController?.abort(); }
+  }
+  document.querySelectorAll('[data-tab]').forEach(button=>{
+    button.addEventListener('click',()=>selectTab(button.dataset.tab));
+    button.addEventListener('keydown',event=>{
+      const tabs=Object.keys(titles), index=tabs.indexOf(selected);
+      let next=null;
+      if (event.key==='ArrowRight') next=tabs[(index+1)%tabs.length];
+      if (event.key==='ArrowLeft') next=tabs[(index+tabs.length-1)%tabs.length];
+      if (event.key==='Home') next=tabs[0];
+      if (event.key==='End') next=tabs[tabs.length-1];
+      if (next) { event.preventDefault(); selectTab(next); byId(`tab-${next}`).focus(); }
+    });
+  });
+  byId('terminal-toggle').addEventListener('click',async()=>{
+    if (controlBusy || typeof snapshot?.device?.terminal_print_enabled!=='boolean') return;
+    controlBusy=true; renderHeader();
+    const desired=!snapshot.device.terminal_print_enabled, controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),2000);
+    try {
+      const response=await fetch('/api/terminal',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({enabled:desired}),credentials:'same-origin',signal:controller.signal});
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const result=await response.json();
+      if (typeof result.terminal_print_enabled!=='boolean') throw new Error('Invalid reply');
+      snapshot.device.terminal_print_enabled=result.terminal_print_enabled;
+      byId('control-message').textContent=`Terminal prints ${result.terminal_print_enabled?'enabled':'disabled'}. USB machine data continues.`;
+    } catch (error) { byId('control-message').textContent='Print setting was not confirmed. Check the connection and retry.'; }
+    finally { clearTimeout(timeout); controlBusy=false; renderHeader(); }
+  });
+  byId('raw-details').addEventListener('toggle',()=>{
+    if(byId('raw-details').open) { rawDirty=true; renderRaw(true); if(!detailsInFlight) scheduleDetails(0); }
+    else if(!needsDetails()) { if(detailsTimer!==null) clearTimeout(detailsTimer); detailsTimer=null; detailsController?.abort(); }
+  });
+  document.addEventListener('visibilitychange',()=>{
+    if (document.hidden) {
+      if (timer!==null) clearTimeout(timer); timer=null; activeController?.abort();
+      if(detailsTimer!==null) clearTimeout(detailsTimer); detailsTimer=null; detailsController?.abort(); markGaps();
+    } else {
+      if(!inFlight) schedule(0);
+      if(!detailsInFlight) scheduleDetails(0);
+    }
+    renderHeader(); refreshAges(); renderVisuals();
+  });
+  setInterval(()=>{
+    if(document.hidden) return;
+    if(apiFailures||extraAge()>6||snapshot?.station?.uplink_state==='lost') markGaps();
+    renderHeader(); refreshAges(); renderVisuals();
+    if(byId('raw-details').open) { rawDirty=true; renderRaw(); }
+  },1000);
+  render(); schedule(0);
+})();
+</script>
+</body>
+</html>

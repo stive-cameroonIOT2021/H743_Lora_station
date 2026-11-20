@@ -1,0 +1,99 @@
+menu "H743 LoRa ground station"
+
+config STATION_SPI_MOSI
+    int "Ra-01 MOSI GPIO"
+    default 11
+    range 0 48
+config STATION_SPI_MISO
+    int "Ra-01 MISO GPIO"
+    default 13
+    range 0 48
+config STATION_SPI_SCLK
+    int "Ra-01 SCK GPIO"
+    default 12
+    range 0 48
+config STATION_SPI_CS
+    int "Ra-01 NSS GPIO"
+    default 10
+    range 0 48
+config STATION_RESET
+    int "Ra-01 RESET GPIO"
+    default 9
+    range 0 48
+config STATION_FREQUENCY_HZ
+    int "Radio centre frequency in Hz (must match Pi)"
+    default 433775000
+    range 410000000 525000000
+config STATION_BANDWIDTH_HZ
+    int "LoRa bandwidth in Hz (125000, 250000 or 500000)"
+    default 125000
+config STATION_SF
+    int "LoRa spreading factor (must match Pi)"
+    default 7
+    range 7 12
+config STATION_CODING_RATE
+    int "LoRa coding rate denominator, 4/x"
+    default 5
+    range 5 8
+config STATION_SYNC_WORD
+    hex "Private LoRa sync word (must match Pi)"
+    default 0x12
+    range 0x00 0xff
+config STATION_PREAMBLE
+    int "Preamble symbols (must match Pi)"
+    default 8
+    range 6 65535
+config STATION_TX_POWER_DBM
+    int "Conducted TX power in dBm (account for antenna gain)"
+    default 5
+    range 2 17
+config STATION_DUTY_PERMILLE
+    int "Maximum TX duty cycle in parts per thousand"
+    default 100
+    range 1 100
+config STATION_EXPECTED_PERIOD_MS
+    int "Expected aircraft update period in ms, for link status"
+    default 5000
+    range 250 60000
+config STATION_REPLY_GUARD_MS
+    int "Delay after packet before transmitting a reply"
+    default 20
+    range 5 100
+
+config STATION_LED_ENABLED
+    bool "Enable onboard addressable RGB status LED"
+    default y
+config STATION_LED_GPIO
+    int "RGB LED GPIO (21 on ESP32-S3-Zero)"
+    default 21
+    range 0 48
+config STATION_LED_BRIGHTNESS
+    int "RGB brightness, 0 to 255"
+    default 8
+    range 0 255
+config STATION_TERMINAL_PRINT_DEFAULT
+    bool "Enable terminal debug prints at startup"
+    default y
+    help
+        Controls human-readable ESP_LOG output. USB telemetry remains active.
+        Runtime global: g_terminal_print_enabled; the webpage can toggle it.
+
+config STATION_WEB_ENABLED
+    bool "Enable local Wi-Fi access point and telemetry webpage"
+    default y
+config STATION_AP_SSID
+    string "Ground station access point SSID"
+    default "VFPR-Station"
+config STATION_AP_PASSWORD
+    string "Access point WPA2 password (8 to 63 characters)"
+    default "vfpr-ground"
+config STATION_AP_CHANNEL
+    int "Access point Wi-Fi channel"
+    default 1
+    range 1 11
+config STATION_AP_MAX_CLIENTS
+    int "Maximum connected Wi-Fi clients"
+    default 3
+    range 1 4
+
+endmenu
